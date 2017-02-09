@@ -44,8 +44,6 @@ vorpal
     return coupons.listAsync()
       .then(result => {
         return BPromise.map(result.data, coupon => {
-          console.log('coupon', coupon);
-
           let newCoupon = {
             id: coupon.id,
             currency: coupon.currency,
