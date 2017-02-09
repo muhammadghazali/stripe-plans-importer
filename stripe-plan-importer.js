@@ -7,9 +7,10 @@ const stripe = require('stripe')(
 );
 const BPromise = require('bluebird');
 const plans = BPromise.promisifyAll(stripe.plans);
+const coupons = BPromise.promisifyAll(stripe.coupons);
 
 vorpal
-  .command('import', 'Import stripe plans from old to new account.')
+  .command('import-plans', 'Import stripe plans from old to new account.')
   .action((args) => {
     let createPlansRequest
 
@@ -32,6 +33,36 @@ vorpal
       })
       .catch(err => {
         vorpal.log('Failed to import the plans.', err.message);
+      });
+  });
+
+vorpal
+  .command('import-coupons', 'Import stripe coupons from old to new account.')
+  .action((args) => {
+    vorpal.log('retrieve the coupons from the old account');
+
+    return coupons.listAsync()
+      .then(result => {
+        return BPromise.map(result.data, coupon => {
+          console.log('coupon', coupon);
+
+          let newCoupon = {
+            id: coupon.id,
+            currency: coupon.currency,
+            duration: coupon.duration,
+            amount_off: coupon.amount_off
+          };
+          return coupons.createAsync(newCoupon, {
+            api_key: config.NEW_ACCOUNT_STRIPE_API_KEY
+          });
+        });
+      })
+      .then(() => {
+        vorpal.log('importing the coupons to the new account');
+        return null;
+      })
+      .catch(err => {
+        vorpal.log('Failed to import the coupons.', err.message);
       });
   });
 
