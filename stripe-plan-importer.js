@@ -11,7 +11,7 @@ const coupons = BPromise.promisifyAll(stripe.coupons);
 
 vorpal
   .command('import-plans', 'Import stripe plans from old to new account.')
-  .action((args) => {
+  .action(args => {
     let createPlansRequest
 
     vorpal.log('retrieve the plans from the old account');
@@ -31,14 +31,12 @@ vorpal
         vorpal.log('importing the plans to the new account');
         return null;
       })
-      .catch(err => {
-        vorpal.log('Failed to import the plans.', err.message);
-      });
+      .catch(err => vorpal.log('Failed to import the plans.', err.message));
   });
 
 vorpal
   .command('import-coupons', 'Import stripe coupons from old to new account.')
-  .action((args) => {
+  .action(args => {
     vorpal.log('retrieve the coupons from the old account');
 
     return coupons.listAsync()
@@ -55,13 +53,8 @@ vorpal
           });
         });
       })
-      .then(() => {
-        vorpal.log('importing the coupons to the new account');
-        return null;
-      })
-      .catch(err => {
-        vorpal.log('Failed to import the coupons.', err.message);
-      });
+      .then(() => vorpal.log('importing the coupons to the new account'))
+      .catch(err => vorpal.log('Failed to import the coupons.', err.message));
   });
 
 vorpal
