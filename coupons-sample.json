@@ -1,0 +1,19 @@
+[{
+  "id": "monthly",
+  "amount_off": 1000,
+  "currency": "usd",
+  "duration": "forever",
+  "valid": true
+}, {
+  "id": "yearly",
+  "amount_off": 1000,
+  "currency": "usd",
+  "duration": "forever",
+  "valid": true
+}, {
+  "id": "forever",
+  "amount_off": 10000,
+  "currency": "usd",
+  "duration": "forever",
+  "valid": true
+}]

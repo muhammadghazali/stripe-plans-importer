@@ -65,5 +65,21 @@ vorpal
   });
 
 vorpal
+  .command('create-coupons', 'Create stripe coupons from a JSON file.')
+  .action(args => {
+    vorpal.log('creating the coupons...');
+    let newCoupons = require('./coupons');
+    let createCouponsRequest = [];
+
+    for (let i = 0; i < newCoupons.length; i++) {
+      createCouponsRequest.push(coupons.createAsync(newCoupons[i]));
+    }
+
+    return BPromise.all(createCouponsRequest)
+      .then(() => vorpal.log('done!'))
+      .catch(err => vorpal.log('Failed to create the coupons.', err.message));
+  });
+
+vorpal
   .delimiter('stripe-plan-importer$')
   .show();
