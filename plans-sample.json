@@ -1,0 +1,11 @@
+[{
+  "id": "monthly",
+  "amount": 2900,
+  "currency": "usd",
+  "interval": "month",
+  "interval_count": 1,
+  "livemode": false,
+  "name": "monthly",
+  "statement_descriptor": null,
+  "trial_period_days": 14
+}]

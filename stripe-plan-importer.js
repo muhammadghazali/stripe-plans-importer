@@ -81,5 +81,23 @@ vorpal
   });
 
 vorpal
+  .command('create-plans', 'Create stripe plans from a JSON file.')
+  .action(args => {
+    vorpal.log('creating the plans...');
+    let newPlans = require('./plans');
+    let createPlansRequest = [];
+
+    for (let i = 0; i < newPlans.length; i++) {
+      createPlansRequest.push(plans.createAsync(newPlans[i]), {
+        api_key: config.NEW_ACCOUNT_STRIPE_API_KEY
+      });
+    }
+
+    return BPromise.all(createPlansRequest)
+      .then(() => vorpal.log('done!'))
+      .catch(err => vorpal.log('Failed to create the plans.', err.message));
+  });
+
+vorpal
   .delimiter('stripe-plan-importer$')
   .show();
